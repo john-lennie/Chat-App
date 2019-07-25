@@ -16,7 +16,13 @@ class App extends Component {
   componentDidMount() {
     console.log("componentDidMount <App />");
     this.socket = new WebSocket("ws://localhost:3001/");
-    console.log(this.socket);
+    // code to handle incoming message
+    this.socket.onmessage = (message) => {
+      let messageObject = JSON.parse(message.data);
+      let oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
+      let newMessages = [...oldMessages, messageObject];
+      this.setState({ messages: newMessages });
+    }
 
   }
   updateState(name, text) {
@@ -34,14 +40,7 @@ class App extends Component {
     }
   }
   addMessage(user, message) {
-    this.socket.send(`${user} says ${message}`);
-    // const newMessage = {
-    //   username: user,
-    //   content: message
-    // }
-    // const oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
-    // const newMessages = [...oldMessages, newMessage];
-    // this.setState({ messages: newMessages });
+    this.socket.send(`{"username": "${user}", "content": "${message}"}`);
   }
   render() {
     console.log("Rendering <App />");
