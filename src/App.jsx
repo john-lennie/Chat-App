@@ -10,17 +10,14 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       message: "",
-      messages: [
-        {
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      messages: []
     };
+  }
+  componentDidMount() {
+    console.log("componentDidMount <App />");
+    this.socket = new WebSocket("ws://localhost:3001/");
+    console.log(this.socket);
+
   }
   updateState(name, text) {
     if (name === "currentUser") {
@@ -37,15 +34,17 @@ class App extends Component {
     }
   }
   addMessage(user, message) {
-    const newMessage = {
-      username: user,
-      content: message
-    }
-    const oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
-    const newMessages = [...oldMessages, newMessage];
-    this.setState({ messages: newMessages });
+    this.socket.send(`${user} says ${message}`);
+    // const newMessage = {
+    //   username: user,
+    //   content: message
+    // }
+    // const oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
+    // const newMessages = [...oldMessages, newMessage];
+    // this.setState({ messages: newMessages });
   }
   render() {
+    console.log("Rendering <App />");
     return (
       <div>
         <nav className="navbar">

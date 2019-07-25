@@ -17,6 +17,7 @@ class ChatBar extends Component {
     this.props.updateState(name, e.target.value);
   }
   render() {
+    console.log("Rendering <ChatBar />");
     return (
       <footer className="chatbar">
           <input className="chatbar-username" name="currentUser" value={this.props.currentUser.name} onChange={this.handleChange} />

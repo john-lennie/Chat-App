@@ -1,5 +1,4 @@
-Chat App
-=====================
+# Chatty-React-App
 
 Install the dependencies and start the server.
 
