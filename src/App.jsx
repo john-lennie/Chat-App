@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Nav from './Nav.jsx';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
@@ -10,6 +11,7 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       message: "",
+      numOfConnections: 0,
       messages: []
     };
   }
@@ -17,13 +19,25 @@ class App extends Component {
     console.log("componentDidMount <App />");
     this.socket = new WebSocket("ws://localhost:3001/");
     // code to handle incoming message
-    this.socket.onmessage = (message) => {
-      let messageObject = JSON.parse(message.data);
-      let oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
-      let newMessages = [...oldMessages, messageObject];
-      this.setState({ messages: newMessages });
+    this.socket.onmessage = (event) => {
+      let data = JSON.parse(event.data);
+      switch(data.type) {
+        case "incomingMessage":
+          let oldMessages = this.state.messages; // NEED TO CLEAR THIS UP WITH MYSELF
+          let newMessages = [...oldMessages, data];
+          this.setState({ messages: newMessages });
+          break;
+        case "incomingNotification":
+          // handle incoming notification
+          break;
+        case "incomingConnectionCount":
+          this.setState({ numOfConnections: data.connections });
+          break;
+        default:
+          // show an error in the console if the message type is unknown
+          throw new Error("Unknown event type " + data.type);
+      }
     }
-
   }
   updateState(name, text) {
     if (name === "currentUser") {
@@ -40,15 +54,13 @@ class App extends Component {
     }
   }
   addMessage(user, message) {
-    this.socket.send(`{"username": "${user}", "content": "${message}"}`);
+    this.socket.send(`{"type": "postMessage", "username": "${user}", "content": "${message}"}`);
   }
   render() {
     console.log("Rendering <App />");
     return (
       <div>
-        <nav className="navbar">
-          <a href="/" className="navbar-brand">CHATTY</a>
-        </nav>
+        <Nav numOfConnections={this.state.numOfConnections} />
         <MessageList messages={this.state.messages} />
         <ChatBar updateState={this.updateState} addMessage={this.addMessage} currentUser={this.state.currentUser} message={this.state.message} />
       </div>
