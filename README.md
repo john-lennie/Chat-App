@@ -1,6 +1,6 @@
 # Chatty-React-App
 
-![screenshot](https://github.com/john-lennie/Chatty-React-App/blob/master/build/screenshot.png)
+![screenshot](https://github.com/john-lennie/Chatty-React-App/blob/master/build/screen-shot.png)
 
 Works with https://github.com/john-lennie/Chatty-WebSockets-Server
 
