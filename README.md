@@ -1,5 +1,7 @@
 # Chatty-React-App
 
+(https://github.com/john-lennie/Chatty-React-App/blob/master/build/screenshot.png)
+
 Works with https://github.com/john-lennie/Chatty-WebSockets-Server
 
 Follow instructions to start up the WebSockets Server linked above, then start up this server which serves the front end react app.
