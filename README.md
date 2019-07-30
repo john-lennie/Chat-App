@@ -1,6 +1,10 @@
 # Chatty-React-App
 
-Install the dependencies and start the server.
+Works with https://github.com/john-lennie/Chatty-WebSockets-Server
+
+Follow instructions to start up the WebSockets Server linked above, then start up this server which serves the front end react app.
+
+To install the dependencies and start the server:
 
 ```
 npm install
